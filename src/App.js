@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import TextForm from './components/TextForm';
 import Alert from './components/Alert';
 import About from './components/About'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,6 +15,17 @@ import {
 function App() {
   const [mode, setMode] = useState('light')
   const [alert, setAlert] = useState(null)
+
+  useEffect(() => {
+    let dark = localStorage.getItem("mode")
+    if (dark === "dark"){
+      setMode(dark)
+      document.body.style.backgroundColor = '#042743'
+    }
+    return () => {
+
+    }
+  },[])
 
   const showAlert = (message, type)=>{
     setAlert({
@@ -30,10 +41,12 @@ function App() {
   const toggleMode = ()=>{
     if(mode === 'light'){
       setMode('dark')
+      localStorage.setItem('mode', 'dark')
       document.body.style.backgroundColor = '#042743'
       showAlert("Dark mode has been enabled.", "success")
     }else{
       setMode('light')
+      localStorage.setItem('mode', 'light')
       document.body.style.backgroundColor = 'white'
       showAlert("Light mode has been enabled.", "success")
     }
